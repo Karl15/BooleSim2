@@ -1,0 +1,106 @@
+﻿// comment
+//k:0xf000
+//dd:0xfff0
+//ee:0x0f3f
+//dmy3:3 @14
+//dmy4:4 @ 14
+//dmy5:5 @ 14
+//dmy6:6 @ 14
+//^315.k1
+//\c1?sel.2
+//\c2?sel.2
+//mem_ary(mem_adr.2) : mem_data.2 ? 1
+//\c1?sel.4
+//\c2?sel.4 & !sel.5
+//mdo:_sense.1 ? 1
+//_sense : mem_ary(mem_adr.3) ? 1
+aa:0x0cf3
+clk:1 @ 1:2
+clk:0 @ 0:2
+dmy2:2 @ 14
+dmy7:7 @ 14
+prime : 1
+\c1?!clk
+\c2?clk
+//_f_g = (aa&~(~(~(cc|~dd)&~(~ee|ff))^~gg))^~f_h
+cd  : _cd?b&c	// FF
+_cd = cc|~dd	// Net
+\c1?!clk	// clock
+\c2?1
+_m=k1
+//k2.222:k1?a&b
+k2a:k2?b&c
+//ef  : _ef?b&c
+//_ef = ~ee|ff
+//cdef: _cdef?c&d
+//_cdef = ~_cd&~_ef
+//cdefg:_cdefg?b&c
+//_cdefg=~_cdef^~gg
+//acdefg:_acdefg?b&c
+//_acdefg=aa&~_cdefg
+//cntr:+?b&c
+//cntr_2.15:-?c&d
+//_incr:cntr+3?cntr!=13
+//cntr:_incr?d&e
+//c1?!clk	// clock
+//\c2?1
+//_m=k1
+//k2.222:k1?a&b
+//k2a:k2?b&c
+//k3[0:3]:k2?b&c	// Reg
+//k3a:k3?c&d
+//k5:555?c&d
+//k5a:k5?d&e
+//sel?c&d
+//mem_data:k3?c&d
+//mem_addr:k2a?c&d
+//_l:n[4:7]?d&e
+//_p:_m[0:3]?e&f
+//^2345.n:_m?f&g
+na:n?g&h
+qn[3..0]:n[7..4]?g&h	// Reg
+q[11..8]:qn[3..0]?h&j
+//+fg?f.2&g
+//ary(n):qn?_tfg.2
+//ary_2(n.1):qn.1?_tfg.2
+//p:ary(n)?_tfh.2
+//p_2:ary_2(n.1)?_tfh.3
+_or_bus=n|_a_bus
+//_a_bus:ary(n)?1
+sum:_or_bus?j&k
+\c1?clk
+\c2?1
++a?prime	// FF
+!a?_tfa
+!b?_tfb
+!c?_tfc
+!d?_tfd
+!e?_tfe
+!f?_tff
+!g?_tfg
+!h?_tfh
+!j?_tfj
+!k?_tfk
+_tfa=!k&b
+_tfb?!a&c
+_tfc?!b&d
+_tfd?!c&e
+_tfe?!d&f
+_tff?!e&g
+_tfg?!f&h
+_tfh?!g&j
+_tfj?!h&k
+_tfk?!j&a
+\c1?!clk
+\c2?1
+!prime?a
++a? prime |k&!j
++b?a&!k
++c?b&!a
++d?c&!b
++e?d&!c
++f?e&!d
++g?f&!e
++h?g&!f
++j?h&!g
++k?j&!h
