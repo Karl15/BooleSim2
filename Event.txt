@@ -1,0 +1,19 @@
+﻿
+
+
+
+nm : num					// initialize at t = 0
+nm : num1 @ num2			// value = num1 at t = num2
+nm : num1 @ num2 : num3		// value = num1 at t = num2 repeats each num3 interval
+net ? exp					// bool net node value true if bool exp evaluates to true else false
+net : net1 ? net2			// bool net node value equal to bool net1 if bool net2 is true else false
+net : exp ? net				// bool net node value equal to exp if bool net2 is true else false
+net : exp1 ? exp2			// bool net node value equals exp1 if bool exp2 is true else false
+bus = exp					// bus value equqls exp evaluation
+bus1 = bus2 ? net			// bus1 value equals bus2 value if net is true else 0	
+bus = exp ? net				// bus equals exp value if net is true else 0
++nam ? net					// set ff nam equal true if net is true
++nam ? exp					// reset ff nam equal false if exp is true
+!nam ? net					// set ff nam equal true if net is true
+!nam ? exp					// reset ff nam equal false if exp is true
+							

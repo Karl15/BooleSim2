@@ -1,0 +1,119 @@
+﻿// comment
+clk:1 @ 1:2
+clk:0 @ 2:2
+//a:1 @ 1
+use_clk: 1 @ 2
+idle : 1 @ 2
+//d:1 @ 1
+prime:1 @ 0
+\c1?clk
+\c2?1
++a?prime | d&!c
+//+a?d&!c
++b?a&!d
++c?b&!a
++d?c&!b
+\c1?!clk
+\c2?1
+!prime?a
+!a? !d&b
+!b? !a&c
+!c? !b&d
+!d? !c&a
+//+e?d&!c
+//+f?e&!d
+//+g?f&!e
+//+h?g&!f
+//+j?h&!g
+//+k?j&!h
+//!a?_tfa
+//!b?_tfb
+//!c?_tfc
+//!d?_tfd
+//!e?_tfe
+//!f?_tff
+//!g?_tfg
+//!h?_tfh
+//!j?_tfj
+//!k?_tfk
+_tfa?!k&b
+_tfb?!a&c
+_tfc?!b&d
+_tfd?!c&e
+_tfe?!d&f
+_tff?!e&g
+_tfg?!f&h
+_tfh?!g&j
+_tfj?!h&k
+_tfk?!j&a
+
+//k4.444
+//cc.0xf000
+//dd.0xfff0
+//ee.0x0fff
+//ff.0x0f00
+//gg.0x0f3f
+//aa.0x0cf3
+//dmy_2.2 @ 14
+//dmy_3.3 @ 14
+//dmy_4.4 @ 14
+//dmy_5.5 @ 14
+//dmy_6.6 @ 14
+//dmy_7.7 @ 14
+//^315.k1
+//f_g = aa&~(cc|~dd)  //&~(~ee|ff))^~gg))^~f_h
+//f_g = (aa&~(~(~(cc|~dd)&~(~ee|ff))^~gg))^~f_h
+//\c1?sel.2
+//mem_ary[mem_adr.2] : mem_data.2 ? 1
+//\c1?sel.4
+//\c2?sel.4 & !sel.5
+//f_g = (aa&~(~(~(cc|~dd)&~(~ee|ff))^~gg))^~f_h
+//mdo:_sense.1 ? 1
+//_sense : mem_ary[mem_adr.3] ? 1
+//\c1?!clk
+//\c2?clk
+//cd  : _cd?b&c
+//_cd = 5 + 11
+//\c1?1
+//\c2?1
+//exp:_exp?k4
+//_exp=4 + 9
+//_cd = cc|~dd
+//ef  : _ef?b&c
+//_ef = ~ee|ff
+//cdef: _cdef?c&d
+//_cdef = ~_cd&~_ef
+//cdefg:_cdefg?b&c
+//_cdefg=~_cdef^~gg
+//acdefg:_acdefg?b&c
+//_acdefg=aa&~_cdefg
+//cntr:+?b&c
+//cntr_2.15:-?c&d
+//_incr:cntr+3?cntr!=13
+//cntr:_incr?d&e
+//\c1?!clk
+//\c2?1
+//_m=k1
+//k2.222:k1?a&b
+//k2a:k2?b&c
+//k3[0:3].333:k2?b&c
+//k3a:k3?c&d
+//k5:555?c&d
+//k5a:k5?d&e
+//  sel?c&d
+//mem_data:k3?c&d
+//mem_addr:k2a?c&d
+//_l:n[4..7]?d&e
+//_p:_m[0..3]?e&f
+//^2345.n:_m?f&g
+//na:n?g&h
+//qn[0..3]:n[4..7]?g&h
+//q[8..11]:qn[0..3]?h&j
+//+fg?f.2&g
+//ary[n]:qn?_tfg.2
+//ary_2[n.1]:qn.1?_tfg.2
+//p:ary[n]?_tfh.2
+//p_2:ary_2[n.1]?_tfh.3
+//_or_bus=n|_a_bus
+//_a_bus:ary[n]?1
+//sum:_or_bus?j&k

@@ -1,0 +1,124 @@
+﻿
+initial value				nm : val
+timed value					nm : val @ time
+repetitiive timed value		nm : val @ time : interval
+
+named logic node			nm ? bool expr
+named value node			nm = arith expr
+
+clocked bool assignment		nm : bool expr ? bool expr
+clocked value/expr assign	nm = val expr ? bool expr
+
+
+nm : value   // init @ t = 0
+nm : value @ time  // timed assign
+nm : value @ time : repeat interval
+
+nm : nm/expr ? nm/expr
+
+nm ? expr // named ctrl node
+
+RPN push --> 2 opnds & oper
+	then feed into pip
+	& | ^ + -
+
+	Summation >> mux or SR or FIFO
+
+
+Declarations: 
+	Leading character 
+		Letter for reg or array variable
+		Number for constant
+		Use = instead of Underscore for Signal assign and :? for conditional
+	Remaining characters Alphanumeric or underscore
+	
+	Bit fields 
+		Name[number..number] where number is exponent of two in Name value.  
+		y[2..0] == 1 and y[2..1] == 0 if y == 9.
+		The value of the specified bits is extracted when used as source in assignment.
+		Only the specified bits are changed when assigned.  
+		Results are undefined if multiple assignments occur at the same time.
+	
+	Initialize/Timed Set
+		Name:value  Decimal or 0x or 0X for hexadecimal initialize at time 0
+		Name:value@time Value assigned at specified time
+		Name:value@time:interval repeats at each interval
+		Using a pair to turn a signal on and off creates an oscillator
+		
+	Clocks
+		\c1?expression
+		\c2?expression  If "1" acts as single phase so changes occur at leading edge of c1
+		Race conditions and other glitches are masked because all the setups are made before any outputs
+		are launched emulating synchronous leading/positive edge triggered mode.
+		Can define a two phase clock for negative/trailing edge. C1 controls the setup of Din values 
+		and C2 controls the "launch" of Din to Qout 
+		The clock domain extends to the next clock definition.
+		Multiple domains can use the same clock expression so multiple blocks of logic can be used.
+		Each block operates "in parallel" with other blocks using clocks with the same expression.
+		Editing in a block with more or less function detail must have the same external interface to
+		the other blocks. Logic blocks within each block of logic must have unique names.
+		Future use of names for blocks of logic (modules?) may allow use of blockname.regname syntax
+		for name resolution.  For now just naming the outputs with similar syntax seems sufficient.
+		
+	Assignment		
+		Clock expression must be true for clocked logic, Din setup for c1, launch Din to Qout for c2.
+		Name1:Name2?Expression Name1 is assigned Name2 value if Boolean expression is true
+		If Name2 is a signal and its control expression is true the data expression is evaluated and 
+		the value is used. If false zero value is used.
+		
+	
+ARM-7: 12MHz clock , running at 48 Mhz via PLL.
+Nios II/e 50MHz clock , running at 50 Mhz.
+Used code: ( shifting LED Demo )
+
+void startup_leds(void);
+void delay(void);
+#include <stdio.h>
+#include <system.h>
+#include "altera_avalon_pio_regs.h"
+//
+void startup_leds(void)
+{
+short is;
+short count = 4;
+int laufled = 0x00000001;
+for (count = 0; count < 4; count++ ) {
+for (is = 0; is < 16; is++ ) {
+IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, laufled);
+// IOPIN1 = laufled<<16; // was ARM-Code
+delay(); // wait
+laufled = laufled <<1;
+}
+for (is = 0; is < 16; is++ ) {
+//IOPIN1 = laufled<<16; // was ARM-Code
+IOWR_ALTERA_AVALON_PIO_DATA(PIO_0_BASE, laufled);
+delay(); // wait
+laufled = laufled >>1;
+}
+}
+}
+
+
+//
+void delay(void)
+{
+short int wait = 6000; // ARM-7: 50000 for same speed.
+while (wait) {
+wait = wait -1;
+}
+}
+//
+int main(void)
+{
+short count = 0;
+int delay;
+printf(" Hello from Nios II \n\r");
+startup_leds();
+while(1)
+{
+startup_leds();
+}
+return 0;
+}
+
+Result. The ARM-7 runs about 7 times faster than the Nios II/e !
