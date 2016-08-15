@@ -1,0 +1,8 @@
+HDL simulators use a netlist generated from HDL.  Generating the netlist is tedious and time consuming.
+BooleSim uses a simple syntax to define events, Boolean and value objects, and operators for assignment and conditional assignment.
+Events are used to initialize and create timed assignments.  Clocks are triggered either by an event assignment that can be a Boolean expression.
+There is a syntax for the input data that defines events, Boolean and value expressions.  Clocks trigger assignments and can be Boolean expressions, event assignments, or hot (always true).  
+Clock statements are pairs that begin with \c1 and \c2 where c1 triggers setup and \c2 triggers launch.  Also clock domains are delimitted so assignments following the clock definition are  in that domain.  There must be at least one domain .
+The syntax of the assignment determines item type ? for Boolean, = for value.  Conditional assignment condition expression must be Boolean.
+In summary:
+   A design consists of Boolean and value items, and time events that trigger changes based on conditions and values.
